@@ -17,11 +17,16 @@ class NewButton extends StatelessWidget {
     return OutlinedButton(
       onPressed: onPressed,
       style: OutlinedButton.styleFrom(
+        side: const BorderSide(style: BorderStyle.solid),
         backgroundColor: Colors.purple[50],
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(context.lowValue)),
       ),
-      child: Container(padding: context.paddingLow, child: Text(_buttonText)),
+      child: Container(
+          padding: context.paddingLow,
+          child: Text(
+            _buttonText,
+          )),
     );
   }
 }

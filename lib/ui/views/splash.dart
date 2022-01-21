@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:faaliyet_takip_uygulamasi/base_view.dart';
-import 'package:faaliyet_takip_uygulamasi/ui/views/logiin/register_view.dart';
+import 'package:faaliyet_takip_uygulamasi/ui/views/base_view.dart';
+import 'package:faaliyet_takip_uygulamasi/ui/views/register/register_view.dart';
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
 

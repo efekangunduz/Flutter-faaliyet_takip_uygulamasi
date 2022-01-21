@@ -1,4 +1,8 @@
-import 'package:faaliyet_takip_uygulamasi/base_view.dart';
+import 'package:faaliyet_takip_uygulamasi/ui/views/base_view.dart';
+import 'package:faaliyet_takip_uygulamasi/ui/views/home/add_event_form_view.dart';
+import 'package:faaliyet_takip_uygulamasi/ui/views/home/add_category_form_view.dart';
+import 'package:faaliyet_takip_uygulamasi/ui/views/home/event_list_widget.dart';
+import 'package:faaliyet_takip_uygulamasi/ui/shared/widget/new_tab_widget.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(const HomePage());
@@ -11,17 +15,70 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final String _pageTitle = 'Home';
+  final String _addEventTabText = 'Add Event';
+  final String _myEvents = 'My Events';
+  final String _addCategoryTabText = 'Add Category';
+  final String saveText = 'Save';
+  final bool _adminOnly = true;
+  final IconData _homeIcon = Icons.home;
+  final IconData _addIcon = Icons.add;
+  final IconData _eventsIcon = Icons.event;
+  final IconData _addCategoryIcon = Icons.add_box;
+  final IconData _logoutIcon = Icons.logout;
   @override
   Widget build(BuildContext context) {
-    return BaseView(
-      appBar: AppBar(
-        title: Text('Material App Bar'),
-      ),
-      child: Center(
-        child: Container(
-          child: Text('Hello World'),
+    return DefaultTabController(
+      length: _adminOnly ? 4 : 3,
+      child: BaseView(
+        appBar: appBarMethod(),
+        child: const TabBarView(
+          children: [
+            EventList(),
+            AddEvent(),
+            AddCategory(),
+            EventList(),
+          ],
         ),
       ),
+    );
+  }
+
+  AppBar appBarMethod() {
+    return AppBar(
+      leading: Icon(_homeIcon),
+      actions: [
+        IconButton(
+          onPressed: () => Navigator.of(context).pushNamed("/register"),
+          icon: Icon(_logoutIcon),
+        )
+      ],
+      title: Text(_pageTitle),
+      flexibleSpace: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.indigoAccent, Colors.purpleAccent],
+          ),
+        ),
+      ),
+      bottom: tabBarMethod(),
+    );
+  }
+
+  TabBar tabBarMethod() {
+    return TabBar(
+      indicatorColor: Colors.white,
+      tabs: [
+        NewTab(
+          iconTitle: _pageTitle,
+          icon: Icon(_homeIcon),
+        ),
+        _adminOnly
+            ? NewTab(icon: Icon(_addIcon), iconTitle: _addEventTabText)
+            : Container(),
+        NewTab(icon: Icon(_addCategoryIcon), iconTitle: _addCategoryTabText),
+        NewTab(icon: Icon(_eventsIcon), iconTitle: _myEvents),
+      ],
     );
   }
 }

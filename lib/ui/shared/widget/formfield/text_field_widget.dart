@@ -8,16 +8,19 @@ class RegisterTextField extends StatelessWidget {
     required String labelText,
     required bool obscure,
     String? errorText,
+    required Icon formIcon,
   })  : _textFormKey = textFormKey,
         _labelText = labelText,
         _obscure = obscure,
         _errorText = errorText,
+        _formIcon = formIcon,
         super(key: key);
 
   final String _textFormKey;
   final String _labelText;
   final bool _obscure;
   final String? _errorText;
+  final Widget _formIcon;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -34,13 +37,9 @@ class RegisterTextField extends StatelessWidget {
         labelText: _labelText,
         fillColor: Colors.purple[50],
         filled: true,
+        icon: _formIcon,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(context.normalValue),
-            topRight: Radius.circular(context.normalValue),
-            bottomLeft: Radius.circular(context.normalValue),
-            bottomRight: Radius.circular(context.normalValue),
-          ),
+          borderRadius: BorderRadius.all(context.lowRadius),
         ),
       ),
     );
