@@ -1,7 +1,9 @@
+import 'package:faaliyet_takip_uygulamasi/features/register/auth/auth.dart';
 import 'package:faaliyet_takip_uygulamasi/ui/views/base_view.dart';
 import 'package:faaliyet_takip_uygulamasi/ui/shared/widget/button/new_button_widget.dart';
 import 'package:faaliyet_takip_uygulamasi/ui/shared/widget/button/new_textbutton.dart';
 import 'package:faaliyet_takip_uygulamasi/ui/shared/widget/formfield/text_field_widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
 
@@ -13,24 +15,28 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  final String _registerButton = 'Register';
-  final String _loginButton = 'Login';
-  final String _logo = 'assets/event_management.png';
-  final String _name = 'name';
-  final String _username = 'username';
-  final String _password = 'password';
-  final String _email = 'email';
-  final String _nameErrorText = 'Name is too short';
-  final String _usernameErrorText = 'Username is too short';
-  final String _passwordErrorText = 'Password is too short';
-  final String _emailErrorText = 'Email is not valid';
-  final String _buttonText = 'I have already an account';
-  final Icon _nameFormIcon = const Icon(Icons.account_box);
-  final Icon _usernameFormIcon = const Icon(Icons.account_circle);
-  final Icon _emailFormIcon = const Icon(Icons.email);
-  final Icon _passwordFormIcon = const Icon(Icons.lock);
+  String registerButton = 'Register';
+  String loginButton = 'Login';
+  String logo = 'assets/event_management.png';
+  String name = 'name';
+  String username = 'username';
+  String password = 'password';
+  String email = 'email';
+  String nameErrorText = 'Name is too short';
+  String usernameErrorText = 'Username is too short';
+  String passwordErrorText = 'Password is too short';
+  String emailErrorText = 'Email is not valid';
+  String buttonText = 'I have already an account';
+  IconData nameFormIcon = Icons.account_box;
+  IconData usernameFormIcon = Icons.account_circle;
+  IconData emailFormIcon = Icons.email;
+  IconData passwordFormIcon = Icons.lock;
   bool _haveAnAccount = false;
-
+  final _formkey = GlobalKey<FormState>();
+  String name1 = '';
+  String username1 = '';
+  String password1 = '';
+  String email1 = '';
   void changeState() {
     _haveAnAccount = !_haveAnAccount;
   }
@@ -39,71 +45,143 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return BaseView(
       child: Form(
+        key: _formkey,
         child: Column(
           children: [
-            Expanded(
-                flex: 3,
+            SizedBox(
+                height: context.mediaQuery.viewInsets.bottom > 0
+                    ? 0
+                    : context.height * 0.3,
                 child: Container(
                   decoration:
                       BoxDecoration(borderRadius: context.lowBorderRadius),
-                  child: Image.asset(_logo),
+                  child: Image.asset(logo),
                 )),
-            context.emptySizedHeightBoxNormal,
+            const Spacer(flex: 2),
             !_haveAnAccount
                 ? Expanded(
-                    child: RegisterTextField(
-                    textFormKey: _name,
-                    labelText: _name,
-                    errorText: _nameErrorText,
-                    obscure: false,
-                    formIcon: _nameFormIcon,
-                  ))
-                : Container(),
-            context.emptySizedHeightBoxLow,
-            !_haveAnAccount
-                ? Expanded(
-                    child: RegisterTextField(
-                    textFormKey: _username,
-                    labelText: _username,
-                    errorText: _usernameErrorText,
-                    obscure: false,
-                    formIcon: _usernameFormIcon,
-                  ))
-                : Container(),
-            context.emptySizedHeightBoxLow,
-            Expanded(
-                child: RegisterTextField(
-              textFormKey: _email,
-              labelText: _email,
-              errorText: _emailErrorText,
-              obscure: false,
-              formIcon: _emailFormIcon,
-            )),
-            context.emptySizedHeightBoxLow,
-            Expanded(
-                child: RegisterTextField(
-              textFormKey: _password,
-              labelText: _password,
-              errorText: _passwordErrorText,
-              obscure: true,
-              formIcon: _passwordFormIcon,
-            )),
-            context.emptySizedHeightBoxLow,
-            !_haveAnAccount
-                ? Expanded(
-                    child: NewButton(
-                      buttonText: _registerButton,
-                      onPressed: () => Navigator.of(context).pushNamed("/home"),
+                    child: RegisterFormField(
+                      valueKey: name,
+                      formIconData: nameFormIcon,
+                      labelText: name,
+                      obscure: false,
+                      radius: context.lowValue,
+                      validator: (value) {
+                        if (value.toString().length < 6) {
+                          return nameErrorText;
+                        } else {
+                          return null;
+                        }
+                      },
+                      onSaved: (value) {
+                        setState(() {
+                          name1 = value!;
+                        });
+                      },
                     ),
                   )
-                : Expanded(
-                    child: NewButton(
-                      buttonText: _loginButton,
-                      onPressed: () => Navigator.of(context).pushNamed("/home"),
+                : Container(),
+            const Spacer(),
+            !_haveAnAccount
+                ? Expanded(
+                    child: RegisterFormField(
+                      valueKey: username,
+                      formIconData: usernameFormIcon,
+                      labelText: username,
+                      obscure: false,
+                      radius: context.lowValue,
+                      validator: (value) {
+                        if (value.toString().length < 6) {
+                          return usernameErrorText;
+                        } else {
+                          return null;
+                        }
+                      },
+                      onSaved: (value) {
+                        setState(() {
+                          username1 = value!;
+                        });
+                      },
                     ),
-                  ),
+                  )
+                : Container(),
+            const Spacer(),
+            Expanded(
+              child: RegisterFormField(
+                valueKey: email,
+                formIconData: emailFormIcon,
+                labelText: email,
+                obscure: false,
+                radius: context.lowValue,
+                validator: (value) {
+                  if (value.toString().length < 6) {
+                    return emailErrorText;
+                  } else {
+                    return null;
+                  }
+                },
+                onSaved: (value) {
+                  setState(() {
+                    email1 = value!;
+                  });
+                },
+              ),
+            ),
+            const Spacer(),
+            Expanded(
+              child: RegisterFormField(
+                valueKey: password,
+                formIconData: passwordFormIcon,
+                labelText: password,
+                obscure: true,
+                radius: context.lowValue,
+                validator: (value) {
+                  if (value.toString().length < 6) {
+                    return passwordErrorText;
+                  } else {
+                    return null;
+                  }
+                },
+                onSaved: (value) {
+                  setState(() {
+                    password1 = value!;
+                  });
+                },
+              ),
+            ),
+            const Spacer(),
+            Expanded(
+                child: NewButton(
+                    buttonText: !_haveAnAccount ? registerButton : loginButton,
+                    onPressed: () {
+                      !_haveAnAccount
+                          ? {
+                              if (_formkey.currentState!.validate())
+                                {
+                                  _formkey.currentState!.save(),
+                                  register(email1, password1),
+                                  Navigator.of(context).pushNamed("/home"),
+                                }
+                              else
+                                {
+                                  print('Wrong formkey'),
+                                }
+                            }
+                          : {
+                              if (_formkey.currentState!.validate())
+                                {
+                                  _formkey.currentState!.save(),
+                                  login(email1, password1),
+                                  Navigator.of(context).pushNamed("/home"),
+                                }
+                              else
+                                {
+                                  print('Wrong formkey'),
+                                }
+                            };
+                    })),
             NewTextButton(
-              buttonText: _buttonText,
+              buttonText: buttonText,
               onPressed: () {
                 setState(() {
                   changeState();

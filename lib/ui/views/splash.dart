@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:faaliyet_takip_uygulamasi/ui/views/base_view.dart';
+import 'package:faaliyet_takip_uygulamasi/ui/views/home/home_view.dart';
 import 'package:faaliyet_takip_uygulamasi/ui/views/register/register_view.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
 
@@ -16,16 +18,25 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(context.durationSlow, () {
-      // user not logged ==> Login Screen
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (_) => const RegisterPage()),
-          (route) => false);
+    Timer(const Duration(seconds: 5), () {
+      if (FirebaseAuth.instance.currentUser == null) {
+        // user not logged ==> Login Screen
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (_) => const RegisterPage()),
+            (route) => false);
+      } else {
+        // user already logged in ==> Home Screen
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (_) => const HomePage()),
+            (route) => false);
+      }
     });
   }
 
   final String _title = 'Faaliyet Takip APP';
+  String logo = 'assets/event_management.png';
   @override
   Widget build(BuildContext context) {
     return BaseView(
@@ -35,7 +46,7 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Expanded(
-              child: Image.network('https://picsum.photos/200'),
+              child: Image.asset(logo),
             ),
             TweenAnimationBuilder(
               duration: context.durationLow,

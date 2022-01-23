@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "345675004642",
+    "project_id": "event-management-e0e5c",
+    "storage_bucket": "event-management-e0e5c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:345675004642:android:1b10a0760b43fd84963cbb",
+        "android_client_info": {
+          "package_name": "com.example.faaliyet_takip_uygulamasi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "345675004642-agj6h2a59gq0hkegt1184psctqacl3bj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3emNvKh2oh9YCjsOyep4VrYHemeD6DOY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "345675004642-agj6h2a59gq0hkegt1184psctqacl3bj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

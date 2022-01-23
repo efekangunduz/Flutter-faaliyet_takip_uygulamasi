@@ -18,7 +18,7 @@ class NewButton extends StatelessWidget {
       onPressed: onPressed,
       style: OutlinedButton.styleFrom(
         side: const BorderSide(style: BorderStyle.solid),
-        backgroundColor: Colors.purple[50],
+        backgroundColor: Colors.purple[100],
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(context.lowValue)),
       ),
