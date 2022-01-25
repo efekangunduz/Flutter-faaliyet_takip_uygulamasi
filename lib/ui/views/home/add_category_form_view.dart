@@ -1,4 +1,5 @@
 import 'package:faaliyet_takip_uygulamasi/ui/shared/widget/button/new_button_widget.dart';
+import 'package:faaliyet_takip_uygulamasi/ui/shared/widget/formfield/text_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
 
@@ -18,31 +19,21 @@ class _AddCategoryState extends State<AddCategory> {
     return Form(
       child: ListView(
         children: [
-          TextFormField(
-            key: ValueKey('deneme'),
-            obscureText: false,
-            validator: (value) {
-              if (value.toString().length < 6) {
-                return 'deneme';
-              } else {
-                return null;
-              }
-            },
-            onSaved: (value) {
-              setState(() {
-                deneme = value!;
-              });
-            },
-            decoration: InputDecoration(
-              labelText: deneme,
-              fillColor: Colors.purple[50],
-              filled: true,
-              icon: Icon(denemeIcon),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(context.lowRadius),
-              ),
-            ),
-          ),
+          GeneralFormField(
+              valueKey: 'deneme',
+              obscure: false,
+              validator: (value) {
+                if (value.toString().length < 6) {
+                  return 'deneme';
+                } else {
+                  return null;
+                }
+              },
+              onSaved: (value) {
+                setState(() {
+                  deneme = value!;
+                });
+              }),
           NewButton(
             buttonText: 'Save',
             onPressed: () => Navigator.of(context).pushNamed("/home"),

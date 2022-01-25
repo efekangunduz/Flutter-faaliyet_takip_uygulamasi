@@ -3,7 +3,6 @@ import 'package:faaliyet_takip_uygulamasi/ui/views/base_view.dart';
 import 'package:faaliyet_takip_uygulamasi/ui/shared/widget/button/new_button_widget.dart';
 import 'package:faaliyet_takip_uygulamasi/ui/shared/widget/button/new_textbutton.dart';
 import 'package:faaliyet_takip_uygulamasi/ui/shared/widget/formfield/text_field_widget.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
 
@@ -19,10 +18,12 @@ class _RegisterPageState extends State<RegisterPage> {
   String loginButton = 'Login';
   String logo = 'assets/event_management.png';
   String name = 'name';
+  String surname = 'surname';
   String username = 'username';
   String password = 'password';
   String email = 'email';
   String nameErrorText = 'Name is too short';
+  String surnameErrorText = 'Surame is too short';
   String usernameErrorText = 'Username is too short';
   String passwordErrorText = 'Password is too short';
   String emailErrorText = 'Email is not valid';
@@ -34,6 +35,7 @@ class _RegisterPageState extends State<RegisterPage> {
   bool _haveAnAccount = false;
   final _formkey = GlobalKey<FormState>();
   String name1 = '';
+  String surname1 = '';
   String username1 = '';
   String password1 = '';
   String email1 = '';
@@ -60,7 +62,7 @@ class _RegisterPageState extends State<RegisterPage> {
             const Spacer(flex: 2),
             !_haveAnAccount
                 ? Expanded(
-                    child: RegisterFormField(
+                    child: GeneralFormField(
                       valueKey: name,
                       formIconData: nameFormIcon,
                       labelText: name,
@@ -84,7 +86,31 @@ class _RegisterPageState extends State<RegisterPage> {
             const Spacer(),
             !_haveAnAccount
                 ? Expanded(
-                    child: RegisterFormField(
+                    child: GeneralFormField(
+                      valueKey: surname,
+                      formIconData: nameFormIcon,
+                      labelText: surname,
+                      obscure: false,
+                      radius: context.lowValue,
+                      validator: (value) {
+                        if (value.toString().length < 6) {
+                          return surnameErrorText;
+                        } else {
+                          return null;
+                        }
+                      },
+                      onSaved: (value) {
+                        setState(() {
+                          surname1 = value!;
+                        });
+                      },
+                    ),
+                  )
+                : Container(),
+            const Spacer(),
+            !_haveAnAccount
+                ? Expanded(
+                    child: GeneralFormField(
                       valueKey: username,
                       formIconData: usernameFormIcon,
                       labelText: username,
@@ -107,7 +133,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 : Container(),
             const Spacer(),
             Expanded(
-              child: RegisterFormField(
+              child: GeneralFormField(
                 valueKey: email,
                 formIconData: emailFormIcon,
                 labelText: email,
@@ -129,7 +155,7 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
             const Spacer(),
             Expanded(
-              child: RegisterFormField(
+              child: GeneralFormField(
                 valueKey: password,
                 formIconData: passwordFormIcon,
                 labelText: password,
@@ -159,7 +185,8 @@ class _RegisterPageState extends State<RegisterPage> {
                               if (_formkey.currentState!.validate())
                                 {
                                   _formkey.currentState!.save(),
-                                  register(email1, password1),
+                                  register(email1, password1, username1, name1,
+                                      surname1),
                                   Navigator.of(context).pushNamed("/home"),
                                 }
                               else

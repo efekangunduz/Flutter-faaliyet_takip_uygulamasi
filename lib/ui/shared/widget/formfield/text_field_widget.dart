@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class RegisterFormField extends TextFormField {
-  RegisterFormField({
+class GeneralFormField extends TextFormField {
+  GeneralFormField({
     Key? key,
     String? valueKey,
     String? labelText,

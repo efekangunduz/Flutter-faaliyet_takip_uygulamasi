@@ -18,19 +18,21 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final String _pageTitle = 'Home';
   final String _addEventTabText = 'Add Event';
-  final String _myEvents = 'My Events';
+  final String _myEvents = 'Events';
   final String _addCategoryTabText = 'Add Category';
+  final String _settingsTabText = 'Settings';
   final String saveText = 'Save';
   final bool _adminOnly = true;
   final IconData _homeIcon = Icons.home;
   final IconData _addIcon = Icons.add;
   final IconData _eventsIcon = Icons.event;
   final IconData _addCategoryIcon = Icons.add_box;
+  final IconData _settingsIcon = Icons.settings;
   final IconData _logoutIcon = Icons.logout;
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: _adminOnly ? 4 : 3,
+      length: _adminOnly ? 5 : 4,
       child: BaseView(
         appBar: appBarMethod(),
         child: const TabBarView(
@@ -39,6 +41,7 @@ class _HomePageState extends State<HomePage> {
             AddEvent(),
             AddCategory(),
             EventList(),
+            AddEvent(),
           ],
         ),
       ),
@@ -82,6 +85,7 @@ class _HomePageState extends State<HomePage> {
             : Container(),
         NewTab(icon: Icon(_addCategoryIcon), iconTitle: _addCategoryTabText),
         NewTab(icon: Icon(_eventsIcon), iconTitle: _myEvents),
+        NewTab(icon: Icon(_settingsIcon), iconTitle: _settingsTabText),
       ],
     );
   }

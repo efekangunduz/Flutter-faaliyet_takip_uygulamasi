@@ -1,5 +1,7 @@
+import 'package:faaliyet_takip_uygulamasi/features/home/event_management.dart';
 import 'package:faaliyet_takip_uygulamasi/ui/shared/widget/button/new_button_widget.dart';
 import 'package:faaliyet_takip_uygulamasi/ui/shared/widget/button/new_dropdown_widget.dart';
+import 'package:faaliyet_takip_uygulamasi/ui/shared/widget/formfield/dropdown_field.dart';
 import 'package:faaliyet_takip_uygulamasi/ui/shared/widget/formfield/text_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
@@ -13,24 +15,68 @@ class AddEvent extends StatefulWidget {
 
 class _AddEventState extends State<AddEvent> {
   final String _eventTitleKey = 'eventTitle';
-  String _eventTitleLabel = 'Event Title';
+  final String _eventTitleLabel = 'Event Title';
   final IconData _titleIcon = Icons.title;
   final String _eventDescriptionKey = 'eventDescription';
-  String _eventDescriptionLabel = 'Event Description';
+  final String _eventDescriptionLabel = 'Event Description';
   final IconData _descriptionIcon = Icons.description;
-  final String _eventDateKey = 'eventDateKey';
-  String _eventDateLabel = 'Event Date';
+  final String _eventDateKey = 'eventDate';
+  final String _eventDateLabel = 'Event Date';
   final IconData _dateIcon = Icons.date_range;
+  final String _eventDetailsKey = 'eventDetails';
+  final String _eventDetailsLabel = 'Event Details';
+  final IconData _detailsIcon = Icons.details;
+  final IconData _arrowIcon = Icons.arrow_drop_down;
+  late String newValue;
+  String dropdownValue = 'Meal';
+
   final String _saveButton = 'Save';
+  String eventTitle = '';
+  String eventDescription = '';
+  String eventDate = '';
+  String eventDetails = '';
+
+  final _formkey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Form(
+      key: _formkey,
       child: ListView(
         children: [
-          const NewDropdownWidget(),
-          TextFormField(
-            key: ValueKey(_eventTitleKey),
-            obscureText: false,
+          Container(
+              padding: context.paddingLow,
+              decoration: BoxDecoration(
+                color: Colors.purple[50],
+                border: Border.all(
+                  color: Colors.black87,
+                ),
+                borderRadius:
+                    BorderRadius.all(Radius.circular(context.lowValue)),
+              ),
+              child: NewDropdownFormField(
+                onChanged: (newValue) {
+                  setState(() {
+                    dropdownValue = newValue!;
+                  });
+                },
+                formIconData: _arrowIcon,
+                valueKey: dropdownValue,
+                radius: context.lowValue,
+                items: <String>['Entertainment', 'Meal', 'Education']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              )),
+          context.emptySizedHeightBoxLow3x,
+          GeneralFormField(
+            valueKey: _eventTitleKey,
+            obscure: false,
+            labelText: _eventTitleLabel,
+            formIconData: _titleIcon,
+            radius: context.lowValue,
             validator: (value) {
               if (value.toString().length < 6) {
                 return _eventTitleKey;
@@ -40,73 +86,84 @@ class _AddEventState extends State<AddEvent> {
             },
             onSaved: (value) {
               setState(() {
-                _eventTitleLabel = value!;
+                eventTitle = value!;
               });
             },
-            decoration: InputDecoration(
-              labelText: _eventTitleLabel,
-              fillColor: Colors.purple[50],
-              filled: true,
-              icon: Icon(_titleIcon),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(context.lowRadius),
-              ),
-            ),
           ),
-          TextFormField(
-            key: ValueKey(_eventDescriptionKey),
-            obscureText: false,
+          context.emptySizedHeightBoxLow3x,
+          GeneralFormField(
+            valueKey: _eventDescriptionKey,
+            obscure: false,
+            labelText: _eventDescriptionLabel,
+            formIconData: _descriptionIcon,
+            radius: context.lowValue,
             validator: (value) {
               if (value.toString().length < 6) {
-                return _eventDescriptionLabel;
+                return _eventDescriptionKey;
               } else {
                 return null;
               }
             },
             onSaved: (value) {
               setState(() {
-                _eventDescriptionLabel = value!;
+                eventDescription = value!;
               });
             },
-            decoration: InputDecoration(
-              labelText: _eventDescriptionLabel,
-              fillColor: Colors.purple[50],
-              filled: true,
-              icon: Icon(_descriptionIcon),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(context.lowRadius),
-              ),
-            ),
           ),
-          TextFormField(
-            key: ValueKey(_eventDateKey),
-            obscureText: false,
+          context.emptySizedHeightBoxLow3x,
+          GeneralFormField(
+            valueKey: _eventDateKey,
+            labelText: _eventDateLabel,
+            obscure: false,
+            formIconData: _dateIcon,
+            radius: context.lowValue,
             validator: (value) {
               if (value.toString().length < 6) {
-                return _eventDateLabel;
+                return _eventDateKey;
               } else {
                 return null;
               }
             },
             onSaved: (value) {
               setState(() {
-                _eventDateLabel = value!;
+                eventDate = value!;
               });
             },
-            decoration: InputDecoration(
-              labelText: _eventDateLabel,
-              fillColor: Colors.purple[50],
-              filled: true,
-              icon: Icon(_dateIcon),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.all(context.lowRadius),
-              ),
-            ),
           ),
+          context.emptySizedHeightBoxLow3x,
+          GeneralFormField(
+            valueKey: _eventDetailsKey,
+            labelText: _eventDetailsLabel,
+            formIconData: _detailsIcon,
+            radius: context.lowValue,
+            validator: (value) {
+              if (value.toString().length < 6) {
+                return _eventDetailsKey;
+              } else {
+                return null;
+              }
+            },
+            onSaved: (value) {
+              setState(() {
+                eventDetails = value!;
+              });
+            },
+          ),
+          context.emptySizedHeightBoxLow3x,
           NewButton(
-            buttonText: _saveButton,
-            onPressed: () => Navigator.of(context).pushNamed("/home"),
-          ),
+              buttonText: _saveButton,
+              onPressed: () {
+                if (_formkey.currentState!.validate()) {
+                  _formkey.currentState!.save();
+                  addEvent(
+                      category: dropdownValue,
+                      newTitle: eventTitle,
+                      description: eventDescription,
+                      date: eventDate,
+                      details: eventDetails);
+                  Navigator.of(context).pushNamed("/home");
+                }
+              }),
         ],
       ),
     );
