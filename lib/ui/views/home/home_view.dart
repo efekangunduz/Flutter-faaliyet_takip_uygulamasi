@@ -83,7 +83,10 @@ class _HomePageState extends State<HomePage> {
         _adminOnly
             ? NewTab(icon: Icon(_addIcon), iconTitle: _addEventTabText)
             : Container(),
-        NewTab(icon: Icon(_addCategoryIcon), iconTitle: _addCategoryTabText),
+        _adminOnly
+            ? NewTab(
+                icon: Icon(_addCategoryIcon), iconTitle: _addCategoryTabText)
+            : Container(),
         NewTab(icon: Icon(_eventsIcon), iconTitle: _myEvents),
         NewTab(icon: Icon(_settingsIcon), iconTitle: _settingsTabText),
       ],
