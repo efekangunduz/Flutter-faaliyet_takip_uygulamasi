@@ -5,16 +5,25 @@ class NewDropdownFormField extends DropdownButtonFormField {
     Key? key,
     String? valueKey,
     required List<DropdownMenuItem<dynamic>>? items,
-    IconData? formIconData,
+    IconData? rightIconData,
+    IconData? leftIconData,
     void Function(dynamic)? onChanged,
     void Function(dynamic)? onSaved,
     double radius = 8,
   }) : super(
-          key: key,
-          value: valueKey,
-          items: items,
-          icon: Icon(formIconData),
-          onChanged: onChanged,
-          onSaved: onSaved,
-        );
+            key: key,
+            value: valueKey,
+            items: items,
+            icon: Icon(rightIconData),
+            onChanged: onChanged,
+            onSaved: onSaved,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(radius)),
+              ),
+              labelText: 'Categories',
+              filled: true,
+              fillColor: Colors.purple[300],
+              icon: Icon(leftIconData),
+            ));
 }

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:faaliyet_takip_uygulamasi/features/home/event_management.dart';
 import 'package:faaliyet_takip_uygulamasi/ui/shared/widget/button/new_button_widget.dart';
 import 'package:faaliyet_takip_uygulamasi/ui/shared/widget/formfield/dropdown_field.dart';
@@ -13,6 +14,32 @@ class AddEvent extends StatefulWidget {
 }
 
 class _AddEventState extends State<AddEvent> {
+  var _categories = <DropdownMenuItem>[];
+
+  _loadCategories() async {
+    FirebaseFirestore.instance
+        .collection('Categories')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        setState(() {
+          _categories.add(DropdownMenuItem(
+            child: Text(doc['category']),
+            value: doc['category'],
+          ));
+        });
+      }
+      ;
+    });
+  }
+
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      _loadCategories();
+    });
+  }
+
   final String _eventTitleKey = 'eventTitle';
   final String _eventTitleLabel = 'Event Title';
   final IconData _titleIcon = Icons.title;
@@ -26,6 +53,7 @@ class _AddEventState extends State<AddEvent> {
   final String _eventDetailsLabel = 'Event Details';
   final IconData _detailsIcon = Icons.details;
   final IconData _arrowIcon = Icons.arrow_drop_down;
+  final IconData _categoryIcon = Icons.category_outlined;
   late String newValue;
   String dropdownValue = 'Meal';
 
@@ -36,39 +64,25 @@ class _AddEventState extends State<AddEvent> {
   String eventDetails = '';
 
   final _formkey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Form(
       key: _formkey,
       child: ListView(
         children: [
-          Container(
-              padding: context.paddingLow,
-              decoration: BoxDecoration(
-                color: Colors.purple[50],
-                border: Border.all(
-                  color: Colors.black87,
-                ),
-                borderRadius:
-                    BorderRadius.all(Radius.circular(context.lowValue)),
-              ),
-              child: NewDropdownFormField(
-                onChanged: (newValue) {
-                  setState(() {
-                    dropdownValue = newValue!;
-                  });
-                },
-                formIconData: _arrowIcon,
-                valueKey: dropdownValue,
-                radius: context.lowValue,
-                items: <String>['Entertainment', 'Meal', 'Education']
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-              )),
+          NewDropdownFormField(
+            onChanged: (newValue) {
+              setState(() {
+                dropdownValue = newValue!;
+              });
+            },
+            rightIconData: _arrowIcon,
+            valueKey: dropdownValue,
+            radius: context.lowValue,
+            leftIconData: _categoryIcon,
+            items: _categories,
+          ),
           context.emptySizedHeightBoxLow3x,
           GeneralFormField(
             valueKey: _eventTitleKey,

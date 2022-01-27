@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:faaliyet_takip_uygulamasi/features/register/auth/auth.dart';
 import 'package:faaliyet_takip_uygulamasi/ui/views/base_view.dart';
 import 'package:faaliyet_takip_uygulamasi/ui/views/home/add_event_form_view.dart';
