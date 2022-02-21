@@ -11,11 +11,12 @@ class EventList extends StatefulWidget {
 }
 
 class _EventListState extends State<EventList> {
-  final Stream<QuerySnapshot> _eventsStream =
+  final Stream<QuerySnapshot> _categoryStream =
       FirebaseFirestore.instance.collection('Events').snapshots();
+  @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: _eventsStream,
+      stream: _categoryStream,
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
           return Text('Something went wrong');
@@ -34,13 +35,21 @@ class _EventListState extends State<EventList> {
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return EventDetails();
+                      return EventDetails(
+                        category: data['category'],
+                        title: data['eventTitle'],
+                        date: data['publishedAt'],
+                        description: data['description'],
+                        details: data['details'],
+                        publisher: data['addedBy'],
+                        participantList: List.from(data['participants']),
+                      );
                     },
                   ),
                 );
               },
               child: EventCardWidget(
-                eventTitle: data['newTitle'],
+                eventTitle: data['eventTitle'],
                 eventDate: data['publishedAt'],
                 eventDescription: data['description'],
               ),

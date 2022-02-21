@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
       length: _adminOnly ? 5 : 4,
       child: BaseView(
         appBar: appBarMethod(),
-        child: const TabBarView(
+        child: TabBarView(
           children: [
             EventList(),
             AddEvent(),

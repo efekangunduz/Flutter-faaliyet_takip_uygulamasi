@@ -29,7 +29,6 @@ class _AddEventState extends State<AddEvent> {
           ));
         });
       }
-      ;
     });
   }
 
@@ -169,11 +168,19 @@ class _AddEventState extends State<AddEvent> {
                 if (_formkey.currentState!.validate()) {
                   _formkey.currentState!.save();
                   addEvent(
-                      category: dropdownValue,
-                      newTitle: eventTitle,
-                      description: eventDescription,
-                      date: eventDate,
-                      details: eventDetails);
+                    category: dropdownValue,
+                    eventTitle: eventTitle,
+                    description: eventDescription,
+                    date: eventDate,
+                    details: eventDetails,
+                  );
+                  addEvent2(
+                    category: dropdownValue,
+                    eventTitle: eventTitle,
+                    description: eventDescription,
+                    date: eventDate,
+                    details: eventDetails,
+                  );
                   Navigator.of(context).pushNamed("/home");
                 }
               }),
