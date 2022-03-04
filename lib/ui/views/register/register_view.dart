@@ -1,3 +1,4 @@
+import 'package:faaliyet_takip_uygulamasi/features/home/notifications.dart';
 import 'package:faaliyet_takip_uygulamasi/features/register/auth/auth.dart';
 import 'package:faaliyet_takip_uygulamasi/ui/views/base_view.dart';
 import 'package:faaliyet_takip_uygulamasi/ui/shared/widget/button/new_button_widget.dart';
@@ -187,6 +188,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                   _formkey.currentState!.save(),
                                   register(email1, password1, username1, name1,
                                       surname1),
+                                  subscribeTopic(),
                                   Navigator.of(context).pushNamed("/home"),
                                 }
                               else
@@ -199,6 +201,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 {
                                   _formkey.currentState!.save(),
                                   login(email1, password1),
+                                  subscribeTopic(),
                                   Navigator.of(context).pushNamed("/home"),
                                 }
                               else

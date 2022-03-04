@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:faaliyet_takip_uygulamasi/features/home/notifications.dart';
 import 'package:faaliyet_takip_uygulamasi/features/register/auth/auth.dart';
 import 'package:faaliyet_takip_uygulamasi/ui/views/base_view.dart';
 import 'package:faaliyet_takip_uygulamasi/ui/views/home/add_event_form_view.dart';
@@ -30,6 +31,7 @@ class _HomePageState extends State<HomePage> {
   final IconData _addCategoryIcon = Icons.add_box;
   final IconData _settingsIcon = Icons.settings;
   final IconData _logoutIcon = Icons.logout;
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(

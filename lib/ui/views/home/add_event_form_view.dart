@@ -1,3 +1,4 @@
+import 'package:faaliyet_takip_uygulamasi/features/home/notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:faaliyet_takip_uygulamasi/features/home/event_management.dart';
 import 'package:faaliyet_takip_uygulamasi/ui/shared/widget/button/new_button_widget.dart';
@@ -36,6 +37,9 @@ class _AddEventState extends State<AddEvent> {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       _loadCategories();
+      requestPermission();
+      loadFCM();
+      listenFCM();
     });
   }
 
@@ -181,6 +185,7 @@ class _AddEventState extends State<AddEvent> {
                     date: eventDate,
                     details: eventDetails,
                   );
+                  sendPushMessage(eventDescription, eventTitle);
                   Navigator.of(context).pushNamed("/home");
                 }
               }),
