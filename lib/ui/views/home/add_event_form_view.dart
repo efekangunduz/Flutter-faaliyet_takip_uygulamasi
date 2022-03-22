@@ -178,13 +178,6 @@ class _AddEventState extends State<AddEvent> {
                     date: eventDate,
                     details: eventDetails,
                   );
-                  addEvent2(
-                    category: dropdownValue,
-                    eventTitle: eventTitle,
-                    description: eventDescription,
-                    date: eventDate,
-                    details: eventDetails,
-                  );
                   sendPushMessage(eventDescription, eventTitle);
                   Navigator.of(context).pushNamed("/home");
                 }

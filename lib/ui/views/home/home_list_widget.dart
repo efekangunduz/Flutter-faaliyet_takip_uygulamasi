@@ -1,24 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:faaliyet_takip_uygulamasi/features/home/event_management.dart';
 import 'package:faaliyet_takip_uygulamasi/ui/shared/widget/card/event_card_widget.dart';
 import 'package:faaliyet_takip_uygulamasi/ui/views/home/event_details.dart';
 import 'package:flutter/material.dart';
 
-class EventList extends StatefulWidget {
-  const EventList({Key? key}) : super(key: key);
+class HomeList extends StatefulWidget {
+  const HomeList({Key? key}) : super(key: key);
 
   @override
-  _EventListState createState() => _EventListState();
+  _HomeListState createState() => _HomeListState();
 }
 
-class _EventListState extends State<EventList> {
-  final Query<Map<String, dynamic>> _categoryStream = FirebaseFirestore.instance
-      .collection('Events')
-      .where('addedBy', isEqualTo: auth.currentUser!.displayName.toString());
+class _HomeListState extends State<HomeList> {
+  final Stream<QuerySnapshot> _categoryStream =
+      FirebaseFirestore.instance.collection('Events').snapshots();
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: _categoryStream.snapshots(),
+      stream: _categoryStream,
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
           return Text('Something went wrong');

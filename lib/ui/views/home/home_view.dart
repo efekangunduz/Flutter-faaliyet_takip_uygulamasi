@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:faaliyet_takip_uygulamasi/features/home/notifications.dart';
 import 'package:faaliyet_takip_uygulamasi/features/register/auth/auth.dart';
 import 'package:faaliyet_takip_uygulamasi/ui/views/base_view.dart';
 import 'package:faaliyet_takip_uygulamasi/ui/views/home/add_event_form_view.dart';
 import 'package:faaliyet_takip_uygulamasi/ui/views/home/add_category_form_view.dart';
 import 'package:faaliyet_takip_uygulamasi/ui/views/home/event_list_widget.dart';
 import 'package:faaliyet_takip_uygulamasi/ui/shared/widget/new_tab_widget.dart';
+import 'package:faaliyet_takip_uygulamasi/ui/views/home/home_list_widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(const HomePage());
@@ -24,25 +25,48 @@ class _HomePageState extends State<HomePage> {
   final String _addCategoryTabText = 'Add Category';
   final String _settingsTabText = 'Settings';
   final String saveText = 'Save';
-  final bool _adminOnly = true;
+  bool _adminOnly = true;
   final IconData _homeIcon = Icons.home;
   final IconData _addIcon = Icons.add;
   final IconData _eventsIcon = Icons.event;
   final IconData _addCategoryIcon = Icons.add_box;
   final IconData _settingsIcon = Icons.settings;
   final IconData _logoutIcon = Icons.logout;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      getData();
+    });
+  }
+
+  getData() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+
+    DocumentSnapshot<Map<String, dynamic>> documentStream =
+        await FirebaseFirestore.instance
+            .collection('Users')
+            .doc(auth.currentUser?.displayName.toString())
+            .get();
+    setState(() {
+      _adminOnly = documentStream['admin'];
+      print(_adminOnly);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: _adminOnly ? 5 : 4,
+      length: !_adminOnly ? 3 : 5,
       child: BaseView(
         appBar: appBarMethod(),
         child: TabBarView(
           children: [
-            EventList(),
-            AddEvent(),
-            AddCategory(),
+            HomeList(),
+            if (_adminOnly == true) ...{
+              AddEvent(),
+              AddCategory(),
+            },
             EventList(),
             AddEvent(),
           ],
@@ -83,13 +107,10 @@ class _HomePageState extends State<HomePage> {
           iconTitle: _pageTitle,
           icon: Icon(_homeIcon),
         ),
-        _adminOnly
-            ? NewTab(icon: Icon(_addIcon), iconTitle: _addEventTabText)
-            : Container(),
-        _adminOnly
-            ? NewTab(
-                icon: Icon(_addCategoryIcon), iconTitle: _addCategoryTabText)
-            : Container(),
+        if (_adminOnly == true) ...{
+          NewTab(icon: Icon(_addIcon), iconTitle: _addEventTabText),
+          NewTab(icon: Icon(_addCategoryIcon), iconTitle: _addCategoryTabText),
+        },
         NewTab(icon: Icon(_eventsIcon), iconTitle: _myEvents),
         NewTab(icon: Icon(_settingsIcon), iconTitle: _settingsTabText),
       ],

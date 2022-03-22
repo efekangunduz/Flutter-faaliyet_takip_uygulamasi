@@ -101,7 +101,7 @@ void sendPushMessage(body, title) async {
           'data': <String, dynamic>{
             'click_action': 'FLUTTER_NOTIFICATION_CLICK',
             'id': '1',
-            'status': 'done'
+            'status': 'Completed'
           },
           "to": "/topics/Users",
         },

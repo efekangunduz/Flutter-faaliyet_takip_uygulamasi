@@ -1,13 +1,13 @@
 import 'package:faaliyet_takip_uygulamasi/features/home/event_management.dart';
 import 'package:faaliyet_takip_uygulamasi/features/register/auth/auth.dart';
 import 'package:faaliyet_takip_uygulamasi/ui/views/base_view.dart';
+import 'package:faaliyet_takip_uygulamasi/ui/views/home/participants_list.dart';
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
 
 class EventDetails extends StatefulWidget {
   EventDetails(
       {Key? key,
-      required this.participantList,
       required this.category,
       required this.title,
       required this.description,
@@ -16,7 +16,6 @@ class EventDetails extends StatefulWidget {
       required this.publisher})
       : super(key: key);
   final String title, description, date, details, publisher, category;
-  final List<String> participantList;
 
   @override
   _EventDetailsState createState() => _EventDetailsState();
@@ -25,7 +24,6 @@ class EventDetails extends StatefulWidget {
 class _EventDetailsState extends State<EventDetails> {
   final IconData _homeIcon = Icons.home;
   final IconData _logoutIcon = Icons.logout;
-  String participant = '';
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +49,7 @@ class _EventDetailsState extends State<EventDetails> {
       ),
       child: Card(
         child: Container(
-          height: context.height * 0.6,
+          height: context.height,
           width: context.width,
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -91,23 +89,15 @@ class _EventDetailsState extends State<EventDetails> {
                   style: context.textTheme.headline5,
                 ),
                 SizedBox(
-                  height: context.height * 0.3,
-                  width: context.width,
-                  child: widget.participantList.isNotEmpty
-                      ? Container()
-                      : ListView.builder(
-                          padding: context.paddingLow,
-                          itemCount: widget.participantList.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Text(
-                              widget.participantList[index],
-                              style: context.textTheme.headline6,
-                            );
-                          }),
-                ),
+                    height: context.height * 0.3,
+                    width: context.width,
+                    child: ParticipantsList(
+                      title: widget.title,
+                    )),
                 TextButton(
                     onPressed: () {
                       joinEvent(widget.title, widget.category);
+                      Navigator.of(context).pushNamed("/home");
                     },
                     child: Text(
                       'Wanna Join? Click me.',

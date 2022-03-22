@@ -189,7 +189,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                   register(email1, password1, username1, name1,
                                       surname1),
                                   subscribeTopic(),
-                                  Navigator.of(context).pushNamed("/home"),
+                                  Navigator.of(context).pushNamed("/splash"),
                                 }
                               else
                                 {
@@ -202,7 +202,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                   _formkey.currentState!.save(),
                                   login(email1, password1),
                                   subscribeTopic(),
-                                  Navigator.of(context).pushNamed("/home"),
+                                  Navigator.of(context).pushNamed("/splash"),
                                 }
                               else
                                 {

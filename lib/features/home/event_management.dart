@@ -26,13 +26,14 @@ Future<void> addEvent({
   required String description,
   required String date,
   required String details,
-  List<String> participants = const [],
 }) async {
   String displayName = auth.currentUser!.displayName.toString();
 
   DocumentReference eventReferencer =
       categoryCollection.doc(category).collection('Events').doc(eventTitle);
 
+  DocumentReference eventReferencer2 = eventCollection.doc(eventTitle);
+
   Map<String, dynamic> data = <String, dynamic>{
     "category": category,
     "eventTitle": eventTitle,
@@ -40,49 +41,33 @@ Future<void> addEvent({
     "publishedAt": date,
     "details": details,
     "addedBy": displayName,
-    "participants": participants,
   };
 
   await eventReferencer
       .set(data)
       .whenComplete(() => print("Event added to the database"))
       .catchError((e) => print(e));
-}
-
-Future<void> addEvent2({
-  required String category,
-  required String eventTitle,
-  required String description,
-  required String date,
-  required String details,
-  List<String> participants = const [],
-}) async {
-  String displayName = auth.currentUser!.displayName.toString();
-
-  DocumentReference eventReferencer = eventCollection.doc(eventTitle);
-
-  Map<String, dynamic> data = <String, dynamic>{
-    "category": category,
-    "eventTitle": eventTitle,
-    "description": description,
-    "publishedAt": date,
-    "details": details,
-    "addedBy": displayName,
-    "participants": participants
-  };
-
-  await eventReferencer
+  await eventReferencer2
       .set(data)
       .whenComplete(() => print("Event added to the database"))
       .catchError((e) => print(e));
 }
 
 Future<void> joinEvent(String eventTitle, String category) async {
-  String displayName = auth.currentUser!.displayName.toString();
+  String? displayName = auth.currentUser!.displayName.toString();
+  Map<String, dynamic> data = <String, dynamic>{
+    "username": displayName,
+  };
   await categoryCollection
       .doc(category)
       .collection('Events')
       .doc(eventTitle)
-      .update({'participants': displayName});
-  await eventCollection.doc(eventTitle).update({'participants': displayName});
+      .collection('Participants')
+      .doc(displayName)
+      .set(data);
+  await eventCollection
+      .doc(eventTitle)
+      .collection('Participants')
+      .doc(displayName)
+      .set(data);
 }
