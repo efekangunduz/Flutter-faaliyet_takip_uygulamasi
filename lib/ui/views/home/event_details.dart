@@ -2,6 +2,7 @@ import 'package:faaliyet_takip_uygulamasi/features/home/event_management.dart';
 import 'package:faaliyet_takip_uygulamasi/features/register/auth/auth.dart';
 import 'package:faaliyet_takip_uygulamasi/ui/views/base_view.dart';
 import 'package:faaliyet_takip_uygulamasi/ui/views/home/participants_list.dart';
+import 'package:faaliyet_takip_uygulamasi/ui/views/home/video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
 
@@ -13,9 +14,18 @@ class EventDetails extends StatefulWidget {
       required this.description,
       required this.date,
       required this.details,
-      required this.publisher})
+      required this.publisher,
+      required this.photoUrl,
+      required this.videoUrl})
       : super(key: key);
-  final String title, description, date, details, publisher, category;
+  final String title,
+      description,
+      date,
+      details,
+      publisher,
+      category,
+      videoUrl,
+      photoUrl;
 
   @override
   _EventDetailsState createState() => _EventDetailsState();
@@ -57,7 +67,7 @@ class _EventDetailsState extends State<EventDetails> {
           ),
           child: Padding(
             padding: context.paddingNormal,
-            child: Column(
+            child: ListView(
               children: [
                 Text(
                   widget.title,
@@ -66,6 +76,11 @@ class _EventDetailsState extends State<EventDetails> {
                 Text(
                   widget.description,
                   style: context.textTheme.bodyText1,
+                ),
+                SizedBox(
+                  height: context.height * 0.4,
+                  width: double.infinity,
+                  child: Image.network(widget.photoUrl),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -84,12 +99,23 @@ class _EventDetailsState extends State<EventDetails> {
                   widget.details,
                   style: context.textTheme.headline6,
                 ),
+                IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => VideoApp(
+                            video: widget.videoUrl, title: widget.title)));
+                  },
+                  icon: Icon(
+                    Icons.play_arrow,
+                    color: Colors.indigoAccent,
+                  ),
+                ),
                 Text(
                   'Participant List : ',
                   style: context.textTheme.headline5,
                 ),
                 SizedBox(
-                    height: context.height * 0.3,
+                    height: context.height * 0.2,
                     width: context.width,
                     child: ParticipantsList(
                       title: widget.title,

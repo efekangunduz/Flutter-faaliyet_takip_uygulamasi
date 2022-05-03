@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:faaliyet_takip_uygulamasi/features/home/notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:faaliyet_takip_uygulamasi/features/home/event_management.dart';
 import 'package:faaliyet_takip_uygulamasi/ui/shared/widget/button/new_button_widget.dart';
 import 'package:faaliyet_takip_uygulamasi/ui/shared/widget/formfield/dropdown_field.dart';
 import 'package:faaliyet_takip_uygulamasi/ui/shared/widget/formfield/text_field_widget.dart';
+import 'package:faaliyet_takip_uygulamasi/ui/views/home/add_event_photo_video.dart';
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
 
@@ -60,7 +63,7 @@ class _AddEventState extends State<AddEvent> {
   late String newValue;
   String dropdownValue = 'Meal';
 
-  final String _saveButton = 'Save';
+  final String _nextButton = 'Next';
   String eventTitle = '';
   String eventDescription = '';
   String eventDate = '';
@@ -167,7 +170,7 @@ class _AddEventState extends State<AddEvent> {
           ),
           context.emptySizedHeightBoxLow3x,
           NewButton(
-              buttonText: _saveButton,
+              buttonText: _nextButton,
               onPressed: () {
                 if (_formkey.currentState!.validate()) {
                   _formkey.currentState!.save();
@@ -178,8 +181,11 @@ class _AddEventState extends State<AddEvent> {
                     date: eventDate,
                     details: eventDetails,
                   );
-                  sendPushMessage(eventDescription, eventTitle);
-                  Navigator.of(context).pushNamed("/home");
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) => AddEventPhotoVideo(
+                          title: eventTitle,
+                          description: eventDescription,
+                          category: dropdownValue)));
                 }
               }),
         ],

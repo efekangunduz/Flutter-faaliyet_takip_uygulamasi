@@ -210,14 +210,16 @@ class _RegisterPageState extends State<RegisterPage> {
                                 }
                             };
                     })),
-            NewTextButton(
-              buttonText: buttonText,
-              onPressed: () {
-                setState(() {
-                  changeState();
-                });
-              },
-            )
+            !_haveAnAccount
+                ? NewTextButton(
+                    buttonText: buttonText,
+                    onPressed: () {
+                      setState(() {
+                        changeState();
+                      });
+                    },
+                  )
+                : Container(),
           ],
         ),
       ),

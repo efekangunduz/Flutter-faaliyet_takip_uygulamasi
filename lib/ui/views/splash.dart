@@ -35,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
     });
   }
 
-  final String _title = 'Faaliyet Takip APP';
+  final String _title = 'Etkinlik Organizasyon APP';
   String logo = 'assets/event_management.png';
   @override
   Widget build(BuildContext context) {
@@ -50,7 +50,7 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
             TweenAnimationBuilder(
               duration: context.durationLow,
-              tween: Tween<double>(begin: 20, end: 70),
+              tween: Tween<double>(begin: 20, end: 50),
               builder: (_, double value, __) {
                 return Wrap(
                   children: [

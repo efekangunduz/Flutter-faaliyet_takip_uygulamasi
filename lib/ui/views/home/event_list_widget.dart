@@ -38,13 +38,14 @@ class _EventListState extends State<EventList> {
                   MaterialPageRoute(
                     builder: (context) {
                       return EventDetails(
-                        category: data['category'],
-                        title: data['eventTitle'],
-                        date: data['publishedAt'],
-                        description: data['description'],
-                        details: data['details'],
-                        publisher: data['addedBy'],
-                      );
+                          category: data['category'],
+                          title: data['eventTitle'],
+                          date: data['publishedAt'],
+                          description: data['description'],
+                          details: data['details'],
+                          publisher: data['addedBy'],
+                          photoUrl: data['photoUrl'],
+                          videoUrl: data['videoUrl']);
                     },
                   ),
                 );
